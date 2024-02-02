@@ -4,6 +4,8 @@ import Joi from "joi";
 
 const emailRegexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
+const themeList = ["light", "dark", "violet"];
+
 const userSchema = new Schema({
     username: {
         type: String,
@@ -34,7 +36,7 @@ const userSchema = new Schema({
     },
     theme: {
         type: String,
-        enum: ['light', 'dark', 'violet'],
+        enum: themeList,
         default: 'dark',
     }
     
@@ -60,7 +62,7 @@ export const userRefreshTokenShema = Joi.object({
 });
 
 export const userThemeSchema = Joi.object({
-    theme: Joi.string().valid('light', 'dark', 'violet').required()
+    theme: Joi.string().valid(...themeList).required()
 });
 
 const User = model('user', userSchema);

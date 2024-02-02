@@ -26,13 +26,17 @@ const singup = async (req, res) => {
     const newUser = User.create({ ...req.body, username: username, password: hashPassword, avatarURL, accessToken, refreshToken });
     
     res.status(201).json({
-        username: (await newUser).username,
-        email: (await newUser).email,
+        user: {
+            username: (await newUser).username,
+            email: (await newUser).email,
+            avatarURL: (await newUser).avatarURL,
+            id: (await newUser)._id,
+            theme: (await newUser).theme,
+        },
+       
         accessToken: (await newUser).accessToken,
         refreshToken: (await newUser).refreshToken,
-        avatarURL: (await newUser).avatarURL,
-        _id,
-        theme,
+        
     })
 };
 
@@ -110,8 +114,14 @@ const refresh = async (req, res) => {
     }
     catch {
         throw HttpError(403)
-    }
-    
+    }  
+};
+
+const updateTheme = async (req, res) => {
+    const { theme } = req.body;
+    const { _id } = req.user;
+    const result = await User.findByIdAndUpdate(_id, {theme}, {new: true});
+    res.json(result)
 }
 
 
@@ -123,4 +133,5 @@ export default {
     current: ctrlWrapper(current),
     refresh: ctrlWrapper(refresh),
     updateAvatar: ctrlWrapper(updateAvatar),
+    updateTheme: ctrlWrapper(updateTheme),
 }
