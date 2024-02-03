@@ -21,7 +21,7 @@ const singup = async (req, res) => {
     const payload = {
         id: _id
     }
-    const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: '15m' });
+    const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: '23h' });
     const refreshToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "7d" });
     const newUser = User.create({ ...req.body, username: username, password: hashPassword, avatarURL, accessToken, refreshToken });
     
@@ -53,14 +53,14 @@ const singin = async (req, res) => {
     const payload = {
         id: user._id
     }
-    const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: '15m' });
+    const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: '23h' });
     const refreshToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "7d" });
     await User.findByIdAndUpdate(user._id, { accessToken, refreshToken });
 
     res.json({
         accessToken,
         refreshToken,
-        user: { username: user.username, email: email }
+        user: { username: user.username, email: email, avatarURL: user.avatarURL, theme: user.theme }
     })
 
 };
@@ -96,14 +96,17 @@ const updateAvatar = async (req, res) => {
 };
 
 const refresh = async (req, res) => {
-    const { refreshToken } = req.body;
+    const { refreshToken:token } = req.body;
     try {
-        const { id } = jwt.verify(refreshToken, SECRET_KEY);
-        const user = await User.findOne({ refreshToken });
+        const { id } = jwt.verify(token, SECRET_KEY);
+        const user = await User.findOne({ refreshToken: token });
         if (!user) {
             throw HttpError(403)
         }
-        const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "15m" });
+        const payload = {
+            id,
+        }
+        const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
         const refreshToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "7d" });
         await User.findByIdAndUpdate(id, { accessToken, refreshToken });
 
@@ -120,8 +123,24 @@ const refresh = async (req, res) => {
 const updateTheme = async (req, res) => {
     const { theme } = req.body;
     const { _id } = req.user;
-    const result = await User.findByIdAndUpdate(_id, {theme}, {new: true});
+    const result = await User.findByIdAndUpdate(_id, { theme }, { new: true });
     res.json(result)
+};
+
+const updateUser = async (req, res) => {
+    const { _id } = req.user;
+    const { password } = req.body;
+    
+    if (password) {
+        const hashPassword = await bcrypt.hash(password, 10);
+        req.body.password = hashPassword;
+    }
+    const result = await User.findByIdAndUpdate(_id, req.body, { new: true });
+    res.json({
+            username: result.username,
+            email: result.email,
+            avatarURL: result.avatarURL,
+    })
 }
 
 
@@ -132,6 +151,7 @@ export default {
     signout: ctrlWrapper(signout),
     current: ctrlWrapper(current),
     refresh: ctrlWrapper(refresh),
+    updateUser: ctrlWrapper(updateUser),
     updateAvatar: ctrlWrapper(updateAvatar),
     updateTheme: ctrlWrapper(updateTheme),
 }

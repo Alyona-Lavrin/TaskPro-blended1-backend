@@ -47,7 +47,7 @@ userSchema.pre("findOneAndUpdate", runValidateAtUpdate);
 userSchema.post('findOneAndUpdate', handleSaveError);
 
 export const userSignupSchema = Joi.object({
-    username: Joi.string(),
+    username: Joi.string().min(3).required(),
     email: Joi.string().pattern(emailRegexp).required(),
     password: Joi.string().min(8).max(64).required(),
 });
@@ -63,6 +63,12 @@ export const userRefreshTokenShema = Joi.object({
 
 export const userThemeSchema = Joi.object({
     theme: Joi.string().valid(...themeList).required()
+});
+
+export const userUpdateShema = Joi.object({
+  username: Joi.string().min(3),
+  email: Joi.string().pattern(emailRegexp),
+  password: Joi.string().min(8).max(64),
 });
 
 const User = model('user', userSchema);
