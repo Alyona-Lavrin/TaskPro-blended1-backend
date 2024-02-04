@@ -71,6 +71,9 @@ const current = async (req, res) => {
     res.json({
         username,
         email,
+        avatarURL,
+        theme,
+        id,
     })
 };
 
