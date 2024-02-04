@@ -1,25 +1,20 @@
 import { Schema, model } from "mongoose";
-import { handleSaveError } from "./hooks.js";
+import { handleSaveError, runValidateAtUpdate } from "./hooks.js";
 import Joi from "joi";
 
 const dashboardSchema = new Schema(
   {
     name: {
       type: String,
-      required: true,
-    },
-    backgroundURL: {
-      type: String,
-      default: null,
+      required: [true, "Set name for dashboard"],
     },
     icon: {
       type: String,
       default: "",
     },
-    currentDashboard: {
-      type: Boolean,
-      default: false,
-      required: true,
+    backgroundURL: {
+      type: String,
+      default: null,
     },
     owner: {
       type: Schema.Types.ObjectId,
@@ -30,12 +25,15 @@ const dashboardSchema = new Schema(
   { versionKey: false, timestamps: true, strictPopulate: false }
 );
 
-const dashboardAddSchema = Joi.object({
+export const dashboardAddSchema = Joi.object({
   title: Joi.string().required(),
   icon: Joi.string(),
   background: Joi.string(),
 });
+
+dashboardSchema.pre("findOneAndUpdate", runValidateAtUpdate);
 dashboardSchema.post("save", handleSaveError);
+dashboardSchema.post("findOneAndUpdate", handleSaveError);
 
 const Dashboard = model("dashboard", dashboardSchema);
 export default Dashboard;

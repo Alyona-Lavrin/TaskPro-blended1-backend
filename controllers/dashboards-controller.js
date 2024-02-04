@@ -15,7 +15,16 @@ const getById = async (req, res, next) => {
   }
   res.json(result);
 };
-
+const updateById = async (req, res) => {
+  const { dashboardId } = req.params;
+  const result = await Dashboard.findByIdAndUpdate(dashboardId, req.body, {
+    new: true,
+  });
+  if (!result) {
+    throw HttpError(404, `Dashboard with id=${dashboardId} not found`);
+  }
+  res.json(result);
+};
 const deleteById = async (req, res, next) => {
   const { dashboardId } = req.params;
   const result = await Dashboard.findByIdAndDelete(dashboardId);
@@ -38,6 +47,7 @@ const addNew = async (req, res, next) => {
 export default {
   getAll: ctrlWrapper(getAll),
   getById: ctrlWrapper(getById),
+  updateById: ctrlWrapper(updateById),
   deleteById: ctrlWrapper(deleteById),
   addNew: ctrlWrapper(addNew),
 };
