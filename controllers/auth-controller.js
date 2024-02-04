@@ -3,7 +3,6 @@ import HttpError from "../helpers/HttpError.js";
 import User from "../models/User.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import path from "path";
 import fs from 'fs/promises';
 import cloudinary from '../helpers/cloudinary.js';
 
@@ -18,12 +17,8 @@ const singup = async (req, res) => {
     }
     const hashPassword = await bcrypt.hash(password, 10);
     const avatarURL = '';
-    const payload = {
-        id: _id
-    }
-    const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: '23h' });
-    const refreshToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "7d" });
-    const newUser = User.create({ ...req.body, username: username, password: hashPassword, avatarURL, accessToken, refreshToken });
+    
+    const newUser = User.create({ ...req.body, username: username, password: hashPassword, avatarURL });
     
     res.status(201).json({
         user: {
@@ -33,9 +28,6 @@ const singup = async (req, res) => {
             id: (await newUser)._id,
             theme: (await newUser).theme,
         },
-       
-        accessToken: (await newUser).accessToken,
-        refreshToken: (await newUser).refreshToken,
         
     })
 };
@@ -60,7 +52,7 @@ const singin = async (req, res) => {
     res.json({
         accessToken,
         refreshToken,
-        user: { username: user.username, email: email, avatarURL: user.avatarURL, theme: user.theme }
+        user: { username: user.username, email: email, avatarURL: user.avatarURL, theme: user.theme, id: user._id }
     })
 
 };
@@ -143,6 +135,7 @@ const updateUser = async (req, res) => {
             username: result.username,
             email: result.email,
             avatarURL: result.avatarURL,
+            id: _id,
     })
 }
 
