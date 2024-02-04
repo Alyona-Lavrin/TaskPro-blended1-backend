@@ -66,14 +66,14 @@ const singin = async (req, res) => {
 };
 
 const current = async (req, res) => {
-    const { username, email } = req.user;
+    const { username, email, avatarURL, theme, _id } = req.user;
 
     res.json({
         username,
         email,
         avatarURL,
         theme,
-        id,
+        _id,
     })
 };
 
