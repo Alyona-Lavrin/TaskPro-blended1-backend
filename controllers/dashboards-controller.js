@@ -34,7 +34,8 @@ const deleteById = async (req, res, next) => {
 	if (!result) {
 		throw HttpError(404, `Dashboard with id=${dashboardId} not found`);
 	}
-	res.json({
+  res.json({
+    _id: dashboardId,
 		message: "Delete success",
 	});
 };
