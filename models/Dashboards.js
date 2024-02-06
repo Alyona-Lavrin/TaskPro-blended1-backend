@@ -2,33 +2,40 @@ import { Schema, model } from "mongoose";
 import { handleSaveError, runValidateAtUpdate } from "./hooks.js";
 import Joi from "joi";
 
+const emailRegexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
 const dashboardSchema = new Schema(
-  {
-    name: {
-      type: String,
-      required: [true, "Set name for dashboard"],
-    },
-    icon: {
-      type: String,
-      default: "",
-    },
-    backgroundURL: {
-      type: String,
-      default: null,
-    },
-    owner: {
-      type: Schema.Types.ObjectId,
-      ref: "user",
-      required: true,
-    },
-  },
-  { versionKey: false, timestamps: true, strictPopulate: false }
+	{
+		name: {
+			type: String,
+			required: [true, "Set name for dashboard"],
+		},
+		icon: {
+			type: String,
+			default: "",
+		},
+		backgroundURL: {
+			type: String,
+			default: null,
+		},
+		owner: {
+			type: Schema.Types.ObjectId,
+			ref: "user",
+			required: true,
+		},
+	},
+	{ versionKey: false, timestamps: true, strictPopulate: false }
 );
 
 export const dashboardAddSchema = Joi.object({
-  title: Joi.string().required(),
-  icon: Joi.string(),
-  background: Joi.string(),
+	title: Joi.string().required(),
+	icon: Joi.string(),
+	background: Joi.string(),
+});
+
+export const needHelpSchema = Joi.object({
+	email: Joi.string().pattern(emailRegexp).required(),
+	comment: Joi.string().min(50).required(),
 });
 
 dashboardSchema.pre("findOneAndUpdate", runValidateAtUpdate);
