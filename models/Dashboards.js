@@ -6,7 +6,7 @@ const emailRegexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 const dashboardSchema = new Schema(
 	{
-		name: {
+		title: {
 			type: String,
 			required: [true, "Set name for dashboard"],
 		},
@@ -30,7 +30,7 @@ const dashboardSchema = new Schema(
 export const dashboardAddSchema = Joi.object({
 	title: Joi.string().required(),
 	icon: Joi.string(),
-	background: Joi.string(),
+	backgroundURL: Joi.string(),
 });
 
 export const needHelpSchema = Joi.object({
