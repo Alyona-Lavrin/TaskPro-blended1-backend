@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import MongooseError from "../helpers/MongooseError";
+import { handleSaveError } from "./hooks";
 
 const columnSchema = new Schema(
   {
@@ -16,7 +16,7 @@ const columnSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-columnSchema.post("save", MongooseError);
+columnSchema.post("save", handleSaveError);
 
 const Column = model("column", columnSchema);
 
