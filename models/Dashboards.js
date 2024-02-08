@@ -18,6 +18,11 @@ const dashboardSchema = new Schema(
 			type: String,
 			default: null,
 		},
+		currentDashboard: {
+			type: Boolean,
+			default: false,
+			required: true,
+		},
 		owner: {
 			type: Schema.Types.ObjectId,
 			ref: "user",
