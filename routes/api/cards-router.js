@@ -1,16 +1,16 @@
 import express from "express";
-import cardsController from "../../controllers/cards-controllers";
+import cardsController from "../../controllers/cards-controllers.js";
 import {
   authenticate,
   isEmptyBody,
   isValidIdDashboard,
-} from "../../midelwares/index";
+} from "../../midelwares/index.js";
 import { valBody } from "../../decorators/index.js";
 import {
   cardAddSchema,
   cardTransportSchema,
   cardUpdateSchema,
-} from "../../models/Card.js";
+} from "../../models/card.js";
 
 const cardsRouter = express.Router();
 

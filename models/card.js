@@ -1,6 +1,6 @@
 import Joi from "joi";
 import { Schema, model } from "mongoose";
-import { handleSaveError, runValidateAtUpdate } from "./hooks";
+import { handleSaveError, runValidateAtUpdate } from "./hooks.js";
 
 const priorityList = ["without priority", "low", "medium", "high"];
 const deadlineRegex =
@@ -10,7 +10,7 @@ const cardSchema = new Schema(
   {
     title: {
       type: String,
-      required: [tru, "Set title for card"],
+      required: [true, "Set title for card"],
     },
     description: {
       type: String,

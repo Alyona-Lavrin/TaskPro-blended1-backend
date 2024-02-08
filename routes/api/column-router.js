@@ -3,16 +3,18 @@ import {
   authenticate,
   isEmptyBody,
   isValidIdDashboard,
-} from "../../midelwares";
-import column from "../../controllers/column";
-import { columnAddSchema } from "../../models/Column";
+} from "../../midelwares/index.js";
+import column from "../../controllers/column.js";
+import { columnAddSchema } from "../../models/Column.js";
+import valBody from "../../decorators/valBody.js";
 
 const columnRouter = express.Router();
 columnRouter.use(authenticate);
 
 columnRouter.get("/:columnId", column.getById);
 columnRouter.post(
-  "/:columnId",
+  "/:dashboardId",
+  authenticate,
   isValidIdDashboard,
   isEmptyBody,
   valBody(columnAddSchema),

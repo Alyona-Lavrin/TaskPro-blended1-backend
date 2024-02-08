@@ -1,7 +1,7 @@
 import ctrlWrapper from "../decorators/ctrlWrapper.js";
 import HttpError from "../helpers/HttpError.js";
 import Column from "../models/Column.js";
-import { Card } from "../models/Card.js";
+import { Card } from "../models/card.js";
 
 const getById = async (req, res) => {
   const { columnId } = req.params;
