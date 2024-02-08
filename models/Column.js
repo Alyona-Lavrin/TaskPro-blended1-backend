@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 import { handleSaveError } from "./hooks";
+import Joi from "joi";
 
 const columnSchema = new Schema(
   {
@@ -15,6 +16,10 @@ const columnSchema = new Schema(
   },
   { versionKey: false, timestamps: true }
 );
+
+export const columnAddSchema = Joi.object({
+  title: Joi.string().required(),
+});
 
 columnSchema.post("save", handleSaveError);
 

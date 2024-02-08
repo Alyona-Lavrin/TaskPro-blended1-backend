@@ -10,7 +10,7 @@ import {
   cardAddSchema,
   cardTransportSchema,
   cardUpdateSchema,
-} from "../../models/Card.js";
+} from "../../models/card.js";
 
 const cardsRouter = express.Router();
 
