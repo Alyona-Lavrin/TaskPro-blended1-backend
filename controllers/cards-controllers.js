@@ -4,18 +4,18 @@ import Column from "../models/Column.js";
 import { ctrlWrapper } from "../decorators/index.js";
 
 const addCard = async (req, res) => {
-  const { column: columnId } = req.body;
-  const exsistColumn = await Column.findById(columnId);
+  const { columId } = req.params;
+  const exsistColumn = await Column.findById(columId);
   if (!exsistColumn) {
-    throw HttpError(404, `Column with id=${columnId} not found`);
+    throw HttpError(404, `Column with id=${columId} not found`);
   }
-  const result = await Card.create({ ...req.body });
+  const result = await Card.create({ ...req.body, owner: columId });
   res.status(201).json(result);
 };
 
 const deleteCard = async (req, res) => {
   const { id } = req.params;
-  const result = await Card.findByIdAndRemove(id);
+  const result = await Card.findByIdAndDelete(id);
   if (!result) {
     throw HttpError(404`Card with id=${id} not found`);
   }

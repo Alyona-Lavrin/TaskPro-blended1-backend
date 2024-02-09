@@ -3,6 +3,7 @@ import Dashboard from "../models/Dashboards.js";
 import HttpError from "../helpers/HttpError.js";
 import sendHelpEmail from "../helpers/sendHelpEmail.js";
 import Column from "../models/Column.js";
+import { Card } from "../models/card.js";
 const getAll = async (req, res, next) => {
 	const { _id: owner } = req.user;
 	const result = await Dashboard.find({ owner }, "-createdAt -updatedAt");
@@ -12,12 +13,34 @@ const getAll = async (req, res, next) => {
 const getById = async (req, res, next) => {
 	const { dashboardId } = req.params;
 	const result = await Dashboard.findById(dashboardId);
-	const column = await Column.find({owner: result._id})
+	const columns = await Column.find({owner: result._id})
 	if (!result) {
 		throw HttpError(404, `Dashboard with id=${dashboardId} not found`);
 	}
-	res.json({ result, column });
-};
+	if (columns.length){
+	const aggregatedData = await Column.aggregate([
+            {
+                $match: { $or: columns}
+            },
+            {
+                $lookup: {
+                    from: "cards", // Назва колекції колонок
+                    localField: "_id",
+                    foreignField: "owner",
+                    as: "card"
+                },
+            },
+            
+        ]);
+
+        res.json({ result, column: aggregatedData });
+	}
+	res.json({
+		result,
+		column:[],
+	})
+}
+
 const updateById = async (req, res) => {
 	const { dashboardId } = req.params;
 	const result = await Dashboard.findByIdAndUpdate(dashboardId, req.body, {
