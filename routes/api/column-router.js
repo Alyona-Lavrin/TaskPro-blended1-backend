@@ -22,11 +22,11 @@ columnRouter.post(
 );
 columnRouter.put(
   "/:columnId",
-  isValidIdDashboard,
-  isEmptyBody,
+  // isValidIdDashboard,
+  // isEmptyBody,
   valBody(columnAddSchema),
   column.updateById
 );
-columnRouter.delete("/:columnId", isValidIdDashboard, column.removeById);
+columnRouter.delete("/:columnId", column.removeById);
 
 export default columnRouter;

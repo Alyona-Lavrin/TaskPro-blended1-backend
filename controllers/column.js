@@ -26,13 +26,15 @@ const addNew = async (req, res) => {
 
 const removeById = async (req, res) => {
   const { columnId } = req.params;
-  const result = await Column.findByIdAndRemove(columnId);
+  console.log(columnId)
+  const result = await Column.findByIdAndDelete(columnId);
   if (!result) throw HttpError(404);
   res.json(result);
 };
 
 const updateById = async (req, res) => {
   const { columnId } = req.params;
+  console.log(columnId)
   const result = await Column.findByIdAndUpdate(columnId, req.body, {
     new: true,
   });
