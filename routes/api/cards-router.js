@@ -17,7 +17,7 @@ const cardsRouter = express.Router();
 cardsRouter.use(authenticate);
 
 cardsRouter.post(
-  "/",
+  "/:columId",
   isEmptyBody,
   valBody(cardAddSchema),
   cardsController.addCard

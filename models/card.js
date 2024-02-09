@@ -2,7 +2,7 @@ import Joi from "joi";
 import { Schema, model } from "mongoose";
 import { handleSaveError, runValidateAtUpdate } from "./hooks.js";
 
-const priorityList = ["without priority", "low", "medium", "high"];
+const priorityList = ["gray", "green", "blue", "pink"];
 const deadlineRegex =
   /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/;
 
@@ -15,23 +15,23 @@ const cardSchema = new Schema(
     description: {
       type: String,
     },
-    priority: {
+    color: {
       type: String,
       enum: priorityList,
-      default: "without priority",
+      default: "gray",
     },
     deadline: {
       type: String,
-      match: deadlineRegex,
+      // match: deadlineRegex,
     },
-    column: {
+    owner: {
       type: Schema.Types.ObjectId,
       ref: "column",
       required: [true, "Set column for card"],
     },
-    orderNumder: {
-      type: Number,
-    },
+    // orderNumder: {
+    //   type: Number,
+    // },
   },
   { versionKey: false, timestamps: true }
 );
@@ -41,11 +41,9 @@ export const cardAddSchema = Joi.object({
     "any.required": `missing required "title" field`,
   }),
   description: Joi.string(),
-  priority: Joi.string().valid(...priorityList),
-  deadline: Joi.string().pattern(deadlineRegex),
-  column: Joi.string().required().messages({
-    "any.required": `missing required "column" field`,
-  }),
+  color: Joi.string().valid(...priorityList),
+  deadline: Joi.string(),
+  
 });
 export const cardUpdateSchema = Joi.object({
   title: Joi.string(),
