@@ -22,7 +22,7 @@ cardsRouter.post(
   valBody(cardAddSchema),
   cardsController.addCard
 );
-cardsRouter.delete("/:id", isValidIdDashboard, cardsController.deleteCard);
+cardsRouter.delete("/:cardsId",  cardsController.deleteCard);
 cardsRouter.put(
   "/:id",
   isValidIdDashboard,

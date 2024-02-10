@@ -54,8 +54,10 @@ const updateById = async (req, res) => {
 const deleteById = async (req, res, next) => {
 	const { dashboardId } = req.params;
 	const result = await Dashboard.findByIdAndDelete(dashboardId);
-	//   await Column.deleteMany({ dashboardId });
-	//   await Card.deleteMany({ dashboardId });
+	// const columnsForDelete = await Column.find({ owner: dashboardId });
+	// await Column.deleteMany({ owner: dashboardId });
+	// const arrayId = columnsForDelete.map((item) => console.log(item._id));
+	// await Card.deleteMany({owner: arrayId})
 	if (!result) {
 		throw HttpError(404, `Dashboard with id=${dashboardId} not found`);
 	}

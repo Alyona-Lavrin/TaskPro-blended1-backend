@@ -45,7 +45,7 @@ const singin = async (req, res) => {
     const payload = {
         id: user._id
     }
-    const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: '23h' });
+    const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: '5d' });
     const refreshToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "7d" });
     await User.findByIdAndUpdate(user._id, { accessToken, refreshToken });
 
@@ -91,17 +91,19 @@ const updateAvatar = async (req, res) => {
 };
 
 const refresh = async (req, res) => {
-    const { refreshToken:token } = req.body;
-    try {
-        const { id } = jwt.verify(token, SECRET_KEY);
-        const user = await User.findOne({ refreshToken: token });
+    const { refreshToken: token } = req.body;
+    console.log(token)
+    
+    const { id } = jwt.verify(token, SECRET_KEY);
+    console.log(id)
+        const user = await User.findById(id);
         if (!user) {
             throw HttpError(403)
         }
         const payload = {
             id,
         }
-        const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
+        const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "5d" });
         const refreshToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "7d" });
         await User.findByIdAndUpdate(id, { accessToken, refreshToken });
 
@@ -109,10 +111,8 @@ const refresh = async (req, res) => {
             accessToken,
             refreshToken,
         })
-    }
-    catch {
-        throw HttpError(403)
-    }  
+    
+    
 };
 
 const updateTheme = async (req, res) => {
