@@ -41,10 +41,10 @@ const transportCard = async (req, res) => {
 };
 
 const updateCard = async (req, res) => {
-  const { id } = req.params;
-  const result = await Card.findByIdAndUpdate(id, req.body, { new: true });
+  const { cardsId } = req.params;
+  const result = await Card.findByIdAndUpdate(cardsId, req.body, { new: true });
   if (!result) {
-    throw HttpError(404, `Card with id=${id} not found`);
+    throw HttpError(404, `Card with id=${cardsId} not found`);
   }
 
   res.json(result);

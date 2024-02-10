@@ -24,8 +24,8 @@ cardsRouter.post(
 );
 cardsRouter.delete("/:cardsId",  cardsController.deleteCard);
 cardsRouter.put(
-  "/:id",
-  isValidIdDashboard,
+  "/:cardsId",
+  // isValidIdDashboard,
   isEmptyBody,
   valBody(cardUpdateSchema),
   cardsController.updateCard

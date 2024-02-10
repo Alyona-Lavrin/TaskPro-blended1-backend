@@ -3,8 +3,6 @@ import { Schema, model } from "mongoose";
 import { handleSaveError, runValidateAtUpdate } from "./hooks.js";
 
 const priorityList = ["gray", "green", "blue", "pink"];
-const deadlineRegex =
-  /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/;
 
 const cardSchema = new Schema(
   {
@@ -48,8 +46,8 @@ export const cardAddSchema = Joi.object({
 export const cardUpdateSchema = Joi.object({
   title: Joi.string(),
   description: Joi.string(),
-  priority: Joi.string().valid(...priorityList),
-  deadline: Joi.string().pattern(deadlineRegex),
+  color: Joi.string().valid(...priorityList),
+  deadline: Joi.string(),
 });
 export const cardTransportSchema = Joi.object({
   source: Joi.string().required().messages({
