@@ -50,9 +50,20 @@ const updateCard = async (req, res) => {
   res.json(result);
 };
 
+const updateStatus = async (req, res) => {
+  const { cardsId } = req.params;
+  const result = await Card.findByIdAndUpdate(cardsId, req.body, { new: true });
+  if (!result) {
+    throw HttpError(404, `Card with id=${cardsId} not found`);
+  }
+
+  res.json(result);
+};
+
 export default {
   addCard: ctrlWrapper(addCard),
   deleteCard: ctrlWrapper(deleteCard),
   transportCard: ctrlWrapper(transportCard),
   updateCard: ctrlWrapper(updateCard),
+  updateStatus: ctrlWrapper(updateStatus),
 };
