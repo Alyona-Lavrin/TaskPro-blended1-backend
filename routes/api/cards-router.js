@@ -38,4 +38,12 @@ cardsRouter.patch(
   cardsController.transportCard
 );
 
+cardsRouter.patch(
+  "/:id/updateStatus",
+  isValidIdDashboard,
+  isEmptyBody,
+  valBody(cardTransportSchema),
+  cardsController.updateStatus
+);
+
 export default cardsRouter;
