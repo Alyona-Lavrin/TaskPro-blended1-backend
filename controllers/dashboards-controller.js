@@ -19,19 +19,18 @@ const getById = async (req, res, next) => {
 	}
 	if (columns.length){
 	const aggregatedData = await Column.aggregate([
-            {
-                $match: { $or: columns}
-            },
-            {
-                $lookup: {
-                    from: "cards", // Назва колекції колонок
-                    localField: "_id",
-                    foreignField: "owner",
-                    as: "card"
-                },
-            },
-            
-        ]);
+    {
+      $match: { $or: columns }, // фільтрує документи на основі вказаної умови
+    },
+    {
+      $lookup: {
+        from: "cards", //  об'єднання документів з колекції "Column" з документами з колекції "cards" на основі вказаних полів (_id в "Column" та owner в "cards")
+        localField: "_id",
+        foreignField: "owner",
+        as: "card",
+      },
+    },
+  ]);
 
         res.json({ result, column: aggregatedData });
 	}
@@ -55,7 +54,6 @@ const deleteById = async (req, res, next) => {
 	const { dashboardId } = req.params;
 	const result = await Dashboard.findByIdAndDelete(dashboardId);
 	const columnsForDelete = await Column.find({ owner: dashboardId });
-	console.log(columnsForDelete)
 	const deletedColumns = await Column.deleteMany({ owner: dashboardId });
 	const arrayId = columnsForDelete.map(item => item.dashboardId);
 	await Card.deleteMany({owner: arrayId})
