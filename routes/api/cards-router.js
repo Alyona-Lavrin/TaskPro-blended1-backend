@@ -30,19 +30,12 @@ cardsRouter.put(
   valBody(cardUpdateSchema),
   cardsController.updateCard
 );
-cardsRouter.patch(
-  "/:id/transport",
-  isValidIdDashboard,
-  isEmptyBody,
-  valBody(cardTransportSchema),
-  cardsController.transportCard
-);
 
 cardsRouter.patch(
-  "/:id/updateStatus",
-  isValidIdDashboard,
+  "/:cardsId/:owner",
+  // isValidIdDashboard,
   isEmptyBody,
-  valBody(cardTransportSchema),
+  // valBody(cardTransportSchema),
   cardsController.updateStatus
 );
 
