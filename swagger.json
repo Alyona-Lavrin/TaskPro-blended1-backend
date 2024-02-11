@@ -657,6 +657,7 @@
             }
           }
         }
+      }
     },
     "/api/column/{dashboardId}": {
       "post": {
@@ -698,8 +699,8 @@
           }
         }
       }
-     }
-    },
+     },
+    
     "/api/cards/{columnId}": {
       "post": {
         "tags": ["Card"],
@@ -745,7 +746,7 @@
         }
       }
     },
-    "/api/cards/{id}": {
+    "/api/cards/{cardsId}": {
       "put": {
         "tags": ["Card"],
         "summary": "update card information",
@@ -814,41 +815,62 @@
         }
       }
     },
-    "/api/card/{id}/transport": {
+    "/api/cards/{cardsId/{:owner}": {
       "patch": {
         "tags": ["Card"],
-        "summary": "transport in another column",
+        "summary": "Update status card",
         "parameters": [
-          {
-            "name": "cardId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "columnId",
             "in": "path",
+            "description": "ID of task to move",
             "required": true,
             "type": "string"
           }
         ],
+        "requestBody": {
+          "description": "Object with column source id and column destination id",
+          "required": true,
+          
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStatusRequest"
+              }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }],
+
         "responses": {
-          "200": {
-            "description": "ok",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransportCardResponse"
+                  "$ref": "#/components/schemas/UpdateStatusResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Bad request (invalid request body)",
+            "description": "Not valid id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotValidIdResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
             "content": {}
           }
+          
         }
       }
+      
     }
   },
   "components": {
@@ -1505,40 +1527,7 @@
           }
         }
       },
-      "TransportCardResponse": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string",
-            "description": "id from DB",
-            "example": "viodghfj5435346yuletsd"
-          },
-          "title": {
-            "type": "string",
-            "description": "card title",
-            "example": "card-title"
-          },
-          "description": {
-            "type": "string",
-            "description": "description",
-            "example": "description"
-          },
-          "owner": {
-            "type": "string",
-            "description": "column owner",
-            "example": "DB-column-ID"
-          },
-          "priority": {
-            "type": "string",
-            "enum": ["no-priority", "low", "medium", "high"],
-            "description": "column is owner"
-          },
-          "deadline": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
+      
       "DeleteCardResponse": {
         "type": "object",
         "properties": {
@@ -1572,7 +1561,59 @@
             "format": "date-time"
           }
         }
+      },
+      "UpdateStatusRequest": {
+        "type": "object",
+        "required": ["columnSourceOrder", "columnDestinationOrder"],
+        "properties": {
+          "columnSourceOrder": {
+            "type": "object",
+            "description": "Column source id",
+            "properties": {
+              "_id": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "Task's id array",
+                  "default": "[]"
+                }
+              }
+            },
+            "example": { "956f22dda2d8f8537d542856": ["648f22dda2d8f8537d580812", "524f22dda2d8f8537d598561"] }
+          },
+          "columnDestinationOrder": {
+            "type": "object",
+            "description": "Column destination id",
+            "properties": {
+              "_id": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "Task's id array",
+                  "default": "[]"
+                }
+              }
+            },
+            "example": { "124f22dda2d8f8537d649752": ["648f22dda2d8f8537d580812", "524f22dda2d8f8537d598561"] }
+          }
+        }
+      },
+       "UpdateStatusResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Task's id",
+            "example": "648f22dda2d8f8537d580812"
+          },          
+          "parentColumn": {
+            "type": "string",
+            "description": "New task's owner(column) id",
+            "example": "124f22dda2d8f8537d649752"
+          }                    
+        }
       }
+      
     },
     "securitySchemes": {
       "Bearer": {
