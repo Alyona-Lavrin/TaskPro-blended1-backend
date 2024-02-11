@@ -565,7 +565,48 @@
         }
       }
     },
-
+    
+    "/api/column/{dashboardId}": {
+      "post": {
+        "tags": ["Column"],
+        "summary": "adding new column to dashboard",
+        "parameters": [
+          {
+            "name": "dashboardId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "put title to new column",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddNewColumnToDashboardRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddNewColumnToDashboardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
+     },
     "/api/column/{columnId}": {
       "get": {
         "tags": ["Column"],
@@ -659,47 +700,7 @@
         }
       }
     },
-    "/api/column/{dashboardId}": {
-      "post": {
-        "tags": ["Column"],
-        "summary": "adding new column to dashboard",
-        "parameters": [
-          {
-            "name": "dashboardId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "requestBody": {
-          "description": "put title to new column",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddNewColumnToDashboardRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AddNewColumnToDashboardResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request (invalid request body)",
-            "content": {}
-          }
-        }
-      }
-     },
+    
     
     "/api/cards/{columnId}": {
       "post": {
