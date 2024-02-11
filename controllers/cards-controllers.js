@@ -24,7 +24,6 @@ const deleteCard = async (req, res) => {
 
 const updateCard = async (req, res) => {
   const { cardsId } = req.params;
-  console.log(req.body);
   const result = await Card.findByIdAndUpdate(cardsId, req.body, { new: true });
   if (!result) {
     throw HttpError(404, `Card with id=${cardsId} not found`);
@@ -35,19 +34,8 @@ const updateCard = async (req, res) => {
 
 const updateStatus = async (req, res) => {
   const { cardsId, owner: oldOwner } = req.params;
-  console.log(oldOwner);
   const { columnId } = req.body;
-  console.log(columnId);
-  const result = await Card.findByIdAndUpdate(
-    cardsId,
-    { owner: columnId },
-    { new: true }
-  );
-  const result = await Card.findByIdAndUpdate(
-    cardsId,
-    { owner: columnId },
-    { new: true }
-  );
+  const result = await Card.findByIdAndUpdate(cardsId, { owner: columnId }, { new: true });
   if (!result) {
     throw HttpError(404, `Card with id=${cardsId} not found`);
   }
