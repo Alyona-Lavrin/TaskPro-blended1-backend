@@ -1,0 +1,1627 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "1.0.0",
+    "title": "TaskPro-blended1 API docs",
+    "description": "API documentation for GoIT project 'TaskPro-blended1' V1. [Backend github repository](https://github.com/havr1985/TaskPro-blended1-backend)",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [{ "url": "http://localhost:3001" },{ "url": "https://task-pro-backend-jm7o.onrender.com" }],
+  "tags": [
+    {
+      "name": "AuthAuthetification",
+      "description": "Authorization endpoints"
+    },
+    {
+      "name": "Dashboard",
+      "description": "Dashboard endpoints"
+    },
+    {
+      "name": "Column",
+      "description": "Column endpoints"
+    },
+    {
+      "name": "Card",
+      "description": "Card endpoints"
+    }
+  ],
+  "paths": {
+    "/api/auth/signup": {
+      "post": {
+        "tags": ["AuthAuthetification"],
+        "summary": "User registration",
+        "parameters": [],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "409": {
+            "description": "Email in use",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/auth/signin": {
+      "post": {
+        "tags": ["AuthAuthetification"],
+        "summary": "User logIn",
+        "parameters": [],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "409": {
+            "description": "Provided email already exists",
+            "content": {}
+          },
+          "401": {
+            "description": "Email or password invalid",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/auth/signout": {
+      "post": {
+        "tags": ["AuthAuthetification"],
+        "summary": "User logout",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Signout success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogoutResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/auth/current": {
+      "get": {
+        "tags": ["AuthAuthetification"],
+        "summary": "Get current user",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CurrentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "409": {
+            "description": "Provided email already exists",
+            "content": {}
+          }
+        }
+      }
+    },
+    
+  
+    "/api/auth/users/update": {
+      "put": {
+        "tags": ["AuthAuthetification"],
+        "summary": "change user data",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Profile object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AvatarRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvatarResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+     "/api/auth/users/avatars": {
+      "patch": {
+        "tags": ["AuthAuthetification"],
+        "summary": "change user data",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Profile object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProfileRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfileResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+     "/api/auth/users/theme": {
+      "patch": {
+        "tags": ["AuthAuthetification"],
+        "summary": "changing theme of app",
+         "parameters": [
+          {
+            "name": "_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Update the theme by user ID",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThemeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThemeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/dashboard": {
+      "get": {
+        "tags": ["Dashboard"],
+        "summary": "Get all dashboards for current user",
+        "parameters": [],
+        "requestBody": {
+          "description": "Getting all dashboards",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetAllDashboardsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllDashboardsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      },
+      "post": {
+        "tags": ["Dashboard"],
+        "summary": "adding new dashboard",
+        "parameters": [],
+        "requestBody": {
+          "description": "add new dashboard",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddNewDashboardRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddNewDashboardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "409": {
+            "description": "Provided dashboard already exist",
+            "content": {}
+          }
+        }
+      }
+    },
+   "/api/dashboard/help": {
+      "post": {
+        "tags": ["Dashboard"],
+        "summary": "Send an email to technical help",
+        "security": [{"Bearer": []}],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "The token issued to the current user."
+          }
+        ],
+        "requestBody": {
+          "description": "Email and comment to help",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HelpRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Email sent.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HelpResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User creation error.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "error",
+                  "code": 400,
+                  "message": "Message error",
+                  "data": "Not found"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Email already in use..",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "error",
+                  "code": 401,
+                  "message": "Email or password invalid",
+                  "data": "Not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "error",
+                  "code": 500,
+                  "message": "Server error",
+                  "data": "Not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/dashboard/{dashboardId}": {
+      "get": {
+        "tags": ["Dashboard"],
+        "summary": "Get dashboard by ID",
+        "parameters": [
+          {
+            "name": "dashboardId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllDashboardInfoResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      },
+      "put": {
+        "tags": ["Dashboard"],
+        "summary": "Change info about dashboard",
+        "parameters": [
+          {
+            "name": "dashboardId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Change info about dashboard",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeInfoAboutDashboardRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeInfoAboutDashboardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      },
+      
+      "delete": {
+        "tags": ["Dashboard"],
+        "summary": "Delete dashboard",
+        "parameters": [
+          {
+            "name": "dashboardId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteDashboardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    
+    "/api/column/{dashboardId}": {
+      "post": {
+        "tags": ["Column"],
+        "summary": "adding new column to dashboard",
+        "parameters": [
+          {
+            "name": "dashboardId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "put title to new column",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddNewColumnToDashboardRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddNewColumnToDashboardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
+     },
+    "/api/column/{columnId}": {
+      "get": {
+        "tags": ["Column"],
+        "summary": "get all columns` cards",
+        "parameters": [
+          {
+            "name": "columnId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllCardsFromColumnResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      },
+      "put": {
+        "tags": ["Column"],
+        "summary": "change info about column",
+        "parameters": [
+          {
+            "name": "columnId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "change info about column",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeColumnTitleRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeColumnTitleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Column"],
+        "summary": "delete column",
+        "parameters": [
+          {
+            "name": "columnId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteColumnResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    
+    
+    "/api/cards/{columnId}": {
+      "post": {
+        "tags": ["Card"],
+        "summary": "adding new card to column",
+        "parameters": [
+          {
+            "name": "columnId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "put new card to column",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddNewCardToColumnRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddNewCardToColumnResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/cards/{cardsId}": {
+      "put": {
+        "tags": ["Card"],
+        "summary": "update card information",
+        "parameters": [
+          {
+            "name": "cardId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "change info about card",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCardInformationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateCardInformationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Card"],
+        "summary": "delete card",
+        "parameters": [
+          {
+            "name": "cardId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteCardResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/cards/{cardsId/{:owner}": {
+      "patch": {
+        "tags": ["Card"],
+        "summary": "Update status card",
+        "parameters": [
+          {
+            "name": "columnId",
+            "in": "path",
+            "description": "ID of task to move",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Object with column source id and column destination id",
+          "required": true,
+          
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStatusRequest"
+              }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }],
+
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateStatusResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Not valid id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotValidIdResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+          
+        }
+      }
+      
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegistrationRequest": {
+        "type": "object",
+        "required": ["email", "password", "name"],
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "User's name"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "RegistrationResponse": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          }
+        },
+        "example": [{ "email": "user@gmail.com" }]
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": { "type": "string", "description": "email@email.com" },
+          "password": { "type": "string", "description": "secret-password" }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "token",
+            "example": "qwerty123"
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "token",
+            "example": "qwerty123"
+          },
+
+          "user": {
+            "type": "object",
+            "properties": {
+              "_id": { "type": "string", "description": "DB user id" },
+              "email": { "type": "string", "description": "email@email.com" },
+              "name": { "type": "string", "description": "name", "example": "user-name" },
+              "avatarURL": { "type": "string", "description": "avatar address on cloudinary" },
+              "theme": { "type": "string", "description": "theme", "example": "violet" }
+            }
+          }
+        }
+      },
+      "LogoutResponse": {},
+      "CurrentRequest": {
+        "type": "object",
+        "required": ["email", "password", "name"],
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXV"
+          }
+        }
+      },
+      "CurrentResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "token",
+            "example": "qwerty123"
+          },
+            "refreshToken": {
+            "type": "string",
+            "description": "token",
+            "example": "qwerty123"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "_id": { "type": "string", "description": "DB user id" },
+              "email": { "type": "string", "description": "email@email.com" },
+              "name": { "type": "string", "description": "name", "example": "user-name" },
+              "avatarURL": { "type": "string", "description": "avatar address on cloudinary" },
+              "theme": { "type": "string", "description": "theme", "example": "violet" }
+            }
+          }
+        }
+      },
+      
+      "ThemeRequest": {
+        "type": "object",
+        "required": ["theme"],
+        "properties": {
+          "theme": { "type": "string", "description": "theme-color" }
+        },
+        "enum": ["light", "dark", "violet"]
+      },
+      "ThemeResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "id from DB",
+            "example": "viodghfj5435346yulet"
+          },
+          "name": { "type": "string", "description": "name", "example": "user-name" },
+          "email": { "type": "string", "description": "email@email.com" },
+          "password": { "type": "string", "description": "hashed password" },
+          "theme": { "type": "string", "description": "theme-color" },
+          "token": {
+            "type": "string",
+            "description": "token",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "ProfileRequest": {
+        "type": "object",
+        "required": ["email", "password", "name"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email@email.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "ProfileResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "id from DB",
+            "example": "viodghfj5435346yuletsd"
+          },
+          "name": { "type": "string", "description": "name", "example": "user-name" },
+          "email": { "type": "string", "description": "email@email.com" },
+          "password": { "type": "string", "description": "hashed password" },
+          "theme": { "type": "string", "description": "theme-color" },
+          "token": {
+            "type": "string",
+            "description": "token",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "AvatarRequest": {
+        "type": "object",
+        
+        "properties": {
+          "avatarURL": { "type": "string", "description": "avatar address" }
+        }
+      },
+      "AvatarResponse": {
+        "type": "object",
+        "properties": {
+        "avatarURL": { "type": "string", "description": "avatar address on cloudinary" }
+        }
+      },
+      "GetAllDashboardsRequest": {},
+      "GetAllDashboardsResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "id from DB",
+              "example": "viodghfj5435346yuletsd"
+            },
+            "name": {
+              "type": "string",
+              "description": "name",
+              "example": "User-name"
+            },
+            "backgroundURL": {
+              "type": "string",
+              "description": "URL"
+            },
+            "icon": {
+              "type": "string",
+              "description": "URL"
+            },
+            "owner": {
+              "type": "string",
+              "description": "owner",
+              "example": "DB-user-ID"
+            }
+          }
+        }
+      },
+      "AddNewDashboardResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "id from DB",
+            "example": "viodghfj5435346yuletsd"
+          },
+          "backgroundURL": { "type": "string", "description": "backgroundURL" },
+          "owner": { "type": "string", "description": "owner" },
+          "name": { "type": "string", "description": "name", "example": "user-name" }
+        }
+      },
+       "HelpRequest": {
+        "type": "object",
+        "required": ["email", "comment"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Feedback email",
+            "format": "email",
+            "example": "mango@mail.com"
+          },
+          "comment": {
+            "type": "string",
+            "description": "User's comment",
+            "example": "Lorem ipsum"
+          }
+        }
+      },
+      "HelpResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "description": "User's data",
+            "properties": {
+              "status": {
+                "type": "string",
+                "description": "response status",
+                "example": "OK"
+              },
+              "code": {
+                "type": "integer",
+                "description": "Code",
+                "example": "200"
+              },
+              "message": {
+                "type": "string",
+                "description": "status message",
+                "example": "email sent"
+              }
+            }
+          }
+        },
+
+        "example": {
+          "status": "OK",
+          "code": 200,
+          "message": "Email sent"
+        }
+      },
+
+      "GetAllDashboardInfoRequest": {},
+      "GetAllDashboardInfoResponse": {
+        "type": "object",
+        "properties": {
+          "dashboard": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "id from DB",
+                "example": "viodghfj5435346yuletsd"
+              },
+              "backgroundURL": { "type": "string", "description": "backgroundURL" },
+              "currentDashboard": {
+                "type": "boolean",
+                "description": "status",
+                "example": "false"
+              },
+              "icon": {
+                "type": "string",
+                "description": "URL"
+              },
+              "owner": { "type": "string", "description": "owner" },
+              "name": { "type": "string", "description": "name", "example": "user-name" }
+            }
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "id from DB",
+                  "example": "viodghfj5435346yuletsd"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "column title",
+                  "example": "column-title"
+                },
+                "owner": {
+                  "type": "string",
+                  "description": "dashboard is owner",
+                  "example": "DB-dashboard-ID"
+                },
+                "cards":{
+                  "type": "array",
+                  "items":{
+                    "type": "object",
+                    "properties":{
+                      "_id": {
+                        "type": "string",
+                        "description": "id from DB",
+                        "example": "viodghfj5435346yuletsd"
+                      },
+                      "title": {
+                        "type": "string",
+                        "description": "card title",
+                        "example": "card-title"
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "description",
+                        "example": "description"
+                      },
+                      "owner": {
+                        "type": "string",
+                        "description": "column owner",
+                        "example": "DB-column-ID"
+                      },
+                      "priority": {
+                        "type": "string",
+                        "enum": ["no-priority", "low", "medium", "high"],
+                        "description": "column is owner"
+                      },
+                      "deadline": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ChangeInfoAboutDashboardRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name"
+          },
+          "backgroundURL": {
+            "type": "string",
+            "description": "Image"
+          }
+        }
+      },
+      "ChangeInfoAboutDashboardResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "id from DB",
+            "example": "viodghfj5435346yuletsd"
+          },
+          "name": {
+            "type": "string",
+            "description": "name",
+            "example": "User-name"
+          },
+          "currentDashboard": {
+            "type": "boolean",
+            "description": "status",
+            "example": "false"
+          },
+          "backgroundURL": {
+            "type": "string",
+            "description": "URL"
+          },
+          "owner": {
+            "type": "string",
+            "description": "owner",
+            "example": "DB-user-ID"
+          }
+        }
+      },
+      "DeleteDashboardRequest": {},
+      "DeleteDashboardResponse": {
+        "type": "object",
+        "properties": {
+          "dashboard": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "id from DB",
+                "example": "viodghfj5435346yuletsd"
+              },
+              "currentDashboard": {
+                "type": "boolean",
+                "description": "status",
+                "example": "false"
+              },
+              "backgroundURL": { "type": "string", "description": "backgroundURL" },
+              "owner": { "type": "string", "description": "owner" },
+              "name": { "type": "string", "description": "name", "example": "user-name" }
+            }
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "id from DB",
+                  "example": "viodghfj5435346yuletsd"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "column title",
+                  "example": "column-title"
+                },
+                "owner": {
+                  "type": "string",
+                  "description": "dashboard is owner",
+                  "example": "DB-dashboard-ID"
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "AddNewColumnToDashboardRequest": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "description": "title", "example": "title" }
+        }
+      },
+      "AddNewColumnToDashboardResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "id from DB",
+            "example": "viodghfj5435346yuletsd"
+          },
+          "owner": { "type": "string", "description": "owner" },
+          "title": { "type": "string", "description": "title", "example": "title" }
+        }
+      },
+      "GetAllCardsFromColumnResponse": {
+        "type": "object",
+        "properties": {
+          "column": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "id from DB",
+                "example": "viodghfj5435346yuletsd"
+              },
+              "owner": { "type": "string", "description": "owner id from DB" },
+              "title": { "type": "string", "description": "title", "example": "title" }
+            }
+          },
+          "cards": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "id from DB",
+                  "example": "viodghfj5435346yuletsd"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "card title",
+                  "example": "card-title"
+                },
+                "owner": {
+                  "type": "string",
+                  "description": "column owner",
+                  "example": "DB-column-ID"
+                },
+                "priority": {
+                  "type": "string",
+                  "enum": ["no-priority", "low", "medium", "high"],
+                  "description": "column is owner"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ChangeColumnTitleRequest": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "description": "title", "example": "title" }
+        }
+      },
+      "ChangeColumnTitleResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "id from DB",
+            "example": "viodghfj5435346yuletsd"
+          },
+          "title": {
+            "type": "string",
+            "description": "title",
+            "example": "column-title"
+          },
+          "owner": {
+            "type": "string",
+            "description": "owner",
+            "example": "DB-column-ID"
+          }
+        }
+      },
+      "DeleteColumnResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "id from DB",
+            "example": "viodghfj5435346yuletsd"
+          },
+          "owner": { "type": "string", "description": "owner" },
+          "title": { "type": "string", "description": "title", "example": "title" }
+        }
+      },
+      "AddNewCardToColumnRequest": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "description": "title", "example": "title" },
+          "description": {
+            "type": "string",
+            "description": "description",
+            "example": "description"
+          },
+          "deadline": { "type": "date", "description": "date", "example": "12-12-2023" }
+        }
+      },
+      "AddNewCardToColumnResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "id from DB",
+            "example": "viodghfj5435346yuletsd"
+          },
+          "title": {
+            "type": "string",
+            "description": "card title",
+            "example": "card-title"
+          },
+          "description": {
+            "type": "string",
+            "description": "description",
+            "example": "description"
+          },
+          "owner": {
+            "type": "string",
+            "description": "column owner",
+            "example": "DB-column-ID"
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["no-priority", "low", "medium", "high"],
+            "description": "column is owner"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      
+      "UpdateCardInformationRequest": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "description": "title", "example": "title" },
+          "priority": {
+            "type": "string",
+            "enum": ["no-priority", "low", "medium", "high"],
+            "description": "column is owner"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "UpdateCardInformationResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "id from DB",
+            "example": "viodghfj5435346yuletsd"
+          },
+          "title": {
+            "type": "string",
+            "description": "card title",
+            "example": "card-title"
+          },
+          "description": {
+            "type": "string",
+            "description": "description",
+            "example": "description"
+          },
+          "owner": {
+            "type": "string",
+            "description": "column owner",
+            "example": "DB-column-ID"
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["no-priority", "low", "medium", "high"],
+            "description": "column is owner"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      
+      "DeleteCardResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "id from DB",
+            "example": "viodghfj5435346yuletsd"
+          },
+          "title": {
+            "type": "string",
+            "description": "card title",
+            "example": "card-title"
+          },
+          "description": {
+            "type": "string",
+            "description": "description",
+            "example": "description"
+          },
+          "owner": {
+            "type": "string",
+            "description": "column owner",
+            "example": "DB-column-ID"
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["no-priority", "low", "medium", "high"],
+            "description": "column is owner"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "UpdateStatusRequest": {
+        "type": "object",
+        "required": ["columnSourceOrder", "columnDestinationOrder"],
+        "properties": {
+          "columnSourceOrder": {
+            "type": "object",
+            "description": "Column source id",
+            "properties": {
+              "_id": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "Task's id array",
+                  "default": "[]"
+                }
+              }
+            },
+            "example": { "956f22dda2d8f8537d542856": ["648f22dda2d8f8537d580812", "524f22dda2d8f8537d598561"] }
+          },
+          "columnDestinationOrder": {
+            "type": "object",
+            "description": "Column destination id",
+            "properties": {
+              "_id": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "Task's id array",
+                  "default": "[]"
+                }
+              }
+            },
+            "example": { "124f22dda2d8f8537d649752": ["648f22dda2d8f8537d580812", "524f22dda2d8f8537d598561"] }
+          }
+        }
+      },
+       "UpdateStatusResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Task's id",
+            "example": "648f22dda2d8f8537d580812"
+          },          
+          "parentColumn": {
+            "type": "string",
+            "description": "New task's owner(column) id",
+            "example": "124f22dda2d8f8537d649752"
+          }                    
+        }
+      }
+      
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
