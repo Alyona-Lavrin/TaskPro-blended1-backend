@@ -20,16 +20,12 @@ const cardSchema = new Schema(
     },
     deadline: {
       type: String,
-      // match: deadlineRegex,
     },
     owner: {
       type: Schema.Types.ObjectId,
       ref: "column",
       required: [true, "Set column for card"],
     },
-    // orderNumder: {
-    //   type: Number,
-    // },
   },
   { versionKey: false, timestamps: true }
 );
@@ -49,14 +45,7 @@ export const cardUpdateSchema = Joi.object({
   color: Joi.string().valid(...priorityList),
   deadline: Joi.string(),
 });
-export const cardTransportSchema = Joi.object({
-  source: Joi.string().required().messages({
-    "any.required": `missing required "source" field`,
-  }),
-  destination: Joi.string().required().messages({
-    "any.required": `missing required "destination" field`,
-  }),
-});
+
 
 cardSchema.pre("findOneAndUpdate", runValidateAtUpdate);
 cardSchema.post("save", handleSaveError);

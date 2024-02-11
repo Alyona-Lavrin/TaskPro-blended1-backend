@@ -22,8 +22,7 @@ columnRouter.post(
 );
 columnRouter.put(
   "/:columnId",
-  // isValidIdDashboard,
-  // isEmptyBody,
+  isEmptyBody,
   valBody(columnAddSchema),
   column.updateById
 );

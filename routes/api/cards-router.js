@@ -3,12 +3,10 @@ import cardsController from "../../controllers/cards-controllers.js";
 import {
   authenticate,
   isEmptyBody,
-  isValidIdDashboard,
 } from "../../midelwares/index.js";
 import { valBody } from "../../decorators/index.js";
 import {
   cardAddSchema,
-  cardTransportSchema,
   cardUpdateSchema,
 } from "../../models/card.js";
 
@@ -25,7 +23,6 @@ cardsRouter.post(
 cardsRouter.delete("/:cardsId",  cardsController.deleteCard);
 cardsRouter.put(
   "/:cardsId",
-  // isValidIdDashboard,
   isEmptyBody,
   valBody(cardUpdateSchema),
   cardsController.updateCard
@@ -33,9 +30,7 @@ cardsRouter.put(
 
 cardsRouter.patch(
   "/:cardsId/:owner",
-  // isValidIdDashboard,
   isEmptyBody,
-  // valBody(cardTransportSchema),
   cardsController.updateStatus
 );
 
