@@ -14,8 +14,8 @@ const addCard = async (req, res) => {
 };
 
 const deleteCard = async (req, res) => {
-  const { id } = req.params;
-  const result = await Card.findByIdAndDelete(id);
+  const { cardsId } = req.params;
+  const result = await Card.findByIdAndDelete(cardsId);
   if (!result) {
     throw HttpError(404`Card with id=${id} not found`);
   }
@@ -41,13 +41,27 @@ const transportCard = async (req, res) => {
 };
 
 const updateCard = async (req, res) => {
-  const { id } = req.params;
-  const result = await Card.findByIdAndUpdate(id, req.body, { new: true });
+  const { cardsId } = req.params;
+  console.log(req.body)
+  const result = await Card.findByIdAndUpdate(cardsId, req.body, { new: true });
   if (!result) {
-    throw HttpError(404, `Card with id=${id} not found`);
+    throw HttpError(404, `Card with id=${cardsId} not found`);
   }
 
   res.json(result);
+};
+
+const updateStatus = async (req, res) => {
+  const { cardsId, owner: oldOwner } = req.params;
+  console.log(oldOwner)
+  const { columnId } = req.body;
+  console.log(columnId)
+  const result = await Card.findByIdAndUpdate(cardsId, { owner: columnId }, { new: true });
+  if (!result) {
+    throw HttpError(404, `Card with id=${cardsId} not found`);
+  }
+
+  res.json({ result, oldOwner });
 };
 
 export default {
@@ -55,4 +69,5 @@ export default {
   deleteCard: ctrlWrapper(deleteCard),
   transportCard: ctrlWrapper(transportCard),
   updateCard: ctrlWrapper(updateCard),
+  updateStatus: ctrlWrapper(updateStatus),
 };

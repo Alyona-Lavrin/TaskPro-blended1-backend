@@ -22,20 +22,21 @@ cardsRouter.post(
   valBody(cardAddSchema),
   cardsController.addCard
 );
-cardsRouter.delete("/:id", isValidIdDashboard, cardsController.deleteCard);
+cardsRouter.delete("/:cardsId",  cardsController.deleteCard);
 cardsRouter.put(
-  "/:id",
-  isValidIdDashboard,
+  "/:cardsId",
+  // isValidIdDashboard,
   isEmptyBody,
   valBody(cardUpdateSchema),
   cardsController.updateCard
 );
+
 cardsRouter.patch(
-  "/:id/transport",
-  isValidIdDashboard,
+  "/:cardsId/:owner",
+  // isValidIdDashboard,
   isEmptyBody,
-  valBody(cardTransportSchema),
-  cardsController.transportCard
+  // valBody(cardTransportSchema),
+  cardsController.updateStatus
 );
 
 export default cardsRouter;
