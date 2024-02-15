@@ -13,32 +13,33 @@ const getAll = async (req, res, next) => {
 const getById = async (req, res, next) => {
 	const { dashboardId } = req.params;
 	const result = await Dashboard.findById(dashboardId);
-	const columns = await Column.find({owner: result._id})
+	console.log(result);
+	const columns = await Column.find({ owner: result._id });
 	if (!result) {
 		throw HttpError(404, `Dashboard with id=${dashboardId} not found`);
 	}
-	if (columns.length){
-	const aggregatedData = await Column.aggregate([
-    {
-      $match: { $or: columns }, // фільтрує документи на основі вказаної умови
-    },
-    {
-      $lookup: {
-        from: "cards", //  об'єднання документів з колекції "Column" з документами з колекції "cards" на основі вказаних полів (_id в "Column" та owner в "cards")
-        localField: "_id",
-        foreignField: "owner",
-        as: "card",
-      },
-    },
-  ]);
+	if (columns.length) {
+		const aggregatedData = await Column.aggregate([
+			{
+				$match: { $or: columns }, // фільтрує документи на основі вказаної умови
+			},
+			{
+				$lookup: {
+					from: "cards", //  об'єднання документів з колекції "Column" з документами з колекції "cards" на основі вказаних полів (_id в "Column" та owner в "cards")
+					localField: "_id",
+					foreignField: "owner",
+					as: "card",
+				},
+			},
+		]);
 
-        res.json({ result, column: aggregatedData });
+		res.json({ result, column: aggregatedData });
 	}
 	res.json({
 		result,
-		column:[],
-	})
-}
+		column: [],
+	});
+};
 
 const updateById = async (req, res) => {
 	const { dashboardId } = req.params;
@@ -55,14 +56,16 @@ const deleteById = async (req, res, next) => {
 	const result = await Dashboard.findByIdAndDelete(dashboardId);
 	const columnsForDelete = await Column.find({ owner: dashboardId });
 	const deletedColumns = await Column.deleteMany({ owner: dashboardId });
+
+	console.log(columnsForDelete);
 	const arrayId = columnsForDelete.map(item => item.dashboardId);
-	await Card.deleteMany({owner: arrayId})
+	await Card.deleteMany({ owner: arrayId });
 	if (!result) {
 		throw HttpError(404, `Dashboard with id=${dashboardId} not found`);
 	}
-  res.json({
-	  _id: dashboardId,
-	  deletedColumns,
+	res.json({
+		_id: dashboardId,
+		deletedColumns,
 		message: "Delete success",
 	});
 };
@@ -80,14 +83,16 @@ const needHelp = async (req, res) => {
 		throw HttpError(400, `missing fields email or comment`);
 	}
 	const help = {
-		to: "paboga7428@gosarlar.com",
+		to: "taskpro.project@gmail.com",
 		subject: "Need Help",
 		html: `<div><strong>User: ${request.email}</strong><p>${request.comment}</p> </div>`,
 	};
 
 	await sendHelpEmail(help);
 
-	res.status(201).json({ message: "request sent to taskpro.project@gmail.com" });
+	res
+		.status(201)
+		.json({ message: "request sent to taskpro.project@gmail.com" });
 };
 
 export default {
