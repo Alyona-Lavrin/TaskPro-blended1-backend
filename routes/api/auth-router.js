@@ -9,6 +9,7 @@ const authRouter = express.Router();
 
 const userSignupValidate = valBody(userShemas.userSignupSchema);
 const userSigninValidate = valBody(userShemas.userSigninShema);
+const userSigninByGoogleValidate = valBody(userShemas.userSigninByGoogleShema);
 const userRefreshValidate = valBody(userShemas.userRefreshTokenShema);
 const userChangeTheme = valBody(userShemas.userThemeSchema);
 const userUpdateValidate = valBody(userShemas.userUpdateShema);
@@ -16,6 +17,7 @@ const userUpdateValidate = valBody(userShemas.userUpdateShema);
 
 authRouter.post('/signup', userSignupValidate, authController.singup);
 authRouter.post('/signin', userSigninValidate, authController.singin);
+authRouter.post('/signin-by-google', userSigninByGoogleValidate, authController.singinByGoogle);
 authRouter.post('/signout', authenticate, authController.signout);
 authRouter.get('/current', authenticate, authController.current);
 authRouter.post('/refresh', userRefreshValidate, authController.refresh);

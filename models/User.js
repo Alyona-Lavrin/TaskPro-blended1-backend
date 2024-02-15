@@ -59,6 +59,12 @@ export const userSigninShema = Joi.object({
 	password: Joi.string().min(8).max(64).required(),
 });
 
+export const userSigninByGoogleShema = Joi.object({
+	email: Joi.string().pattern(emailRegexp).required(),
+	username: Joi.string().min(4).max(64).required(),
+	avatarUrl: Joi.string()
+});
+
 export const userRefreshTokenShema = Joi.object({
 	refreshToken: Joi.string().required(),
 });

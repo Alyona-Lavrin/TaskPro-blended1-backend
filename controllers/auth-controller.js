@@ -32,6 +32,35 @@ const singup = async (req, res) => {
     })
 };
 
+const singinByGoogle = async(req, res) => {
+    const { email, username, avatarUrl: avatarURL} = req.body;
+    let user = await User.findOne({ email });
+    if (!user) {
+        const newPassword = Math.random().toString(36).slice(-8);
+        const hashPassword = await bcrypt.hash(newPassword, 10);
+        await User.create({ 
+            username: username, 
+            password: hashPassword, 
+            avatarURL,
+            email: email,
+            theme: "dark",
+         });
+         user = await User.findOne({ email });
+    }
+    const payload = {
+        id: user._id
+    }
+    const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: '5d' });
+    const refreshToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "7d" });
+    await User.findByIdAndUpdate(user._id, { accessToken, refreshToken });
+
+    res.json({
+        accessToken,
+        refreshToken,
+        user: { username: user.username, email: email, avatarURL: user.avatarURL, theme: user.theme, id: user._id }
+    })
+};
+
 const singin = async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
@@ -54,7 +83,6 @@ const singin = async (req, res) => {
         refreshToken,
         user: { username: user.username, email: email, avatarURL: user.avatarURL, theme: user.theme, id: user._id }
     })
-
 };
 
 const current = async (req, res) => {
@@ -144,6 +172,7 @@ const updateUser = async (req, res) => {
 export default {
     singup: ctrlWrapper(singup),
     singin: ctrlWrapper(singin),
+    singinByGoogle: ctrlWrapper(singinByGoogle),
     signout: ctrlWrapper(signout),
     current: ctrlWrapper(current),
     refresh: ctrlWrapper(refresh),
